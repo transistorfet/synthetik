@@ -2,144 +2,237 @@
 #include "NerveSerial.h"
 #include "YM3812.h"
 
+#include <MIDI.h>
 
-
-/******************************
- * Serial Communications Code *
- ******************************/
 
 #define SERIAL_SPEED	115200
 
+/*
 NerveSerial nSerial(&Serial);
 
-/*
-#define SERIAL_SIZE	64
-
-char serial_read_tail = 0;
-char serial_read_head = 0;
-char serial_avail = 0;
-char serial_rb[SERIAL_SIZE];
-char serial_write_head = 0;
-char serial_write_tail = 0;
-char serial_wb[SERIAL_SIZE];
-
-byte read_serial()
+void command_write()
 {
-	register char b;
+	byte addr;
+	byte value;
 
-	b = Serial.read();
-	if (b == -1)
-		return 0;
+	addr = strtol(nSerial.get_arg(0), NULL, 0);
+	value = strtol(nSerial.get_arg(1), NULL, 0);
 
-	noInterrupts();
-	serial_rb[serial_read_tail] = b;
-	if (b == '\n' || b == '\r') {
-		serial_rb[serial_read_tail] = '\0';
-		serial_avail = 1;
-	}
-	if (serial_read_tail < SERIAL_SIZE)
-		serial_read_tail++;
-	interrupts();
-	return serial_avail;
+	ym_write_data(addr, value);
 }
 
-inline byte serial_get_byte()
+void command_default()
 {
-	register byte value;
-
-	noInterrupts();
-	if (serial_read_head == serial_read_tail) {
-		//clear_read_buffer();
-		value = -1;
-	} else {
-		value = serial_rb[serial_read_head++];
-		if (serial_read_head >= SERIAL_SIZE)
-			serial_read_head = 0;
-	}
-	interrupts();
-	return value;
+	Serial.print("error\n");
 }
 
-inline byte serial_add_byte(byte data)
-{
-	noInterrupts();
-	serial_wb[serial_write_tail++] = data;
-	interrupts();
-}
+NerveCommand_t command_list[] = {
+	{ "write", 2, command_write },
+	{ 0, 0, command_default }
+};
 
-void clear_read_buffer()
+void nerve_init()
 {
-	noInterrupts();
-	serial_avail = 0;
-	serial_read_head = 0;
-	serial_read_tail = 0;
-	interrupts();
-}
-
-void flush_write_buffer()
-{
-	if (serial_write_tail > 0) {
-		noInterrupts();
-		for (byte i = 0; i < serial_write_tail; i++) {
-			Serial.write(serial_wb[i]);
-		}
-		serial_write_head = 0;
-		serial_write_tail = 0;
-		interrupts();
-	}
+	Serial.begin(SERIAL_SPEED);
+	nSerial.set_commands(command_list);
 }
 */
 
 
-/**********************
- * Audio Control Code *
- **********************/
+MIDI_CREATE_DEFAULT_INSTANCE();
 
-void set_tone(byte channel, word tone)
+
+void handleNoteOn(byte channel, byte note, byte velocity)
 {
-	ym_write_data(0 + (channel * 2), tone & 0xff);
-	ym_write_data(1 + (channel * 2), (tone >> 8) & 0xff);
+	if (channel == 10) {
+		ym_drum_on(note);
+	}
+	else {
+		if (velocity)
+			ym_note_on(channel - 1, note);
+		else
+			ym_note_off(channel - 1, note);
+	}
 }
 
-#define CLOCK	3686400
-
-#define NOTE_C3		(CLOCK / (16 * 130.81))
-#define NOTE_D3		(CLOCK / (16 * 146.83))
-#define NOTE_E3		(CLOCK / (16 * 164.81))
-#define NOTE_F3		(CLOCK / (16 * 174.61))
-#define NOTE_G3		(CLOCK / (16 * 196.00))
-#define NOTE_A3		(CLOCK / (16 * 220.00))
-#define NOTE_B3		(CLOCK / (16 * 246.94))
-#define NOTE_C4		(CLOCK / (16 * 261.63))
-#define NOTE_D4		(CLOCK / (16 * 293.66))
-#define NOTE_E4		(CLOCK / (16 * 329.63))
-#define NOTE_F4		(CLOCK / (16 * 349.23))
-#define NOTE_G4		(CLOCK / (16 * 392.00))
-
-void run_reset()
+void handleNoteOff(byte channel, byte note, byte velocity)
 {
+	if (channel == 10) {
+		ym_drum_off(note);
+	}
+	else {
+		ym_note_off(channel - 1, note);
+	}
+}
+
+#define CN_COMPOSITE		10
+#define CN_AM_DEPTH		11
+#define CN_VIB_DEPTH		12
+#define CN_FEEDBACK		13
+#define CN_DECAY_ALG		14
+
+#define CN_OP1_AM		20
+#define CN_OP2_AM		21
+#define CN_OP1_VIB		22
+#define CN_OP2_VIB		23
+#define CN_OP1_MAINTAIN		24
+#define CN_OP2_MAINTAIN		25
+#define CN_OP1_MODFREQ		26
+#define CN_OP2_MODFREQ		27
+#define CN_OP1_LEVEL		28
+#define CN_OP2_LEVEL		29
+#define CN_OP1_ATTACK		30
+#define CN_OP2_ATTACK		31
+#define CN_OP1_DECAY		32
+#define CN_OP2_DECAY		33
+#define CN_OP1_SUSTAIN		34
+#define CN_OP2_SUSTAIN		35
+#define CN_OP1_RELEASE		36
+#define CN_OP2_RELEASE		37
+#define CN_OP1_WAVEFORM		38
+#define CN_OP2_WAVEFORM		39
+
+
+void handleControlChange(byte channel, byte number, byte value)
+{
+	byte addr;
+
+	switch (number) {
+	    case 1:
+		ym_write_data(0xA3, value);
+		ym_write_data(0xB3, 0x31);
+		break;
+
+	    case CN_COMPOSITE: 
+		addr = 0x08;
+		ym_write_data(addr, (ym_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
+		break;
+
+	    case CN_AM_DEPTH: 
+		addr = 0xBD;
+		ym_write_data(addr, (ym_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
+		break;
+
+	    case CN_VIB_DEPTH:
+		addr = 0xBD;
+		ym_write_data(addr, (ym_memmap[addr] & 0xBF) | (value ? 0x40 : 0x00));
+		break;
+
+	    case CN_FEEDBACK:
+		addr = 0xC0;
+		ym_write_data(addr, (ym_memmap[addr] & 0xF1) | ((value & 0x7) << 1));
+		break;
+
+	    case CN_DECAY_ALG:
+		addr = 0xC0;
+		ym_write_data(addr, (ym_memmap[addr] & 0xFE) | (value ? 0x01 : 0x00));
+		break;
+
+
+	    case CN_OP1_AM:
+	    case CN_OP2_AM:
+		addr = (number == CN_OP1_AM) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
+		break;
+
+	    case CN_OP1_VIB:
+	    case CN_OP2_VIB:
+		addr = (number == CN_OP1_VIB) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0xBF) | (value ? 0x40 : 0x00));
+		break;
+
+	    case CN_OP1_MAINTAIN:
+	    case CN_OP2_MAINTAIN:
+		addr = (number == CN_OP1_VIB) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0xDF) | (value ? 0x20 : 0x00));
+		break;
+
+	    case CN_OP1_MODFREQ:
+	    case CN_OP2_MODFREQ:
+		addr = (number == CN_OP1_MODFREQ) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0xF0) | (value & 0x0F));
+		break;
+
+	    case CN_OP1_LEVEL:
+	    case CN_OP2_LEVEL:
+		addr = (number == CN_OP1_LEVEL) ? 0x40 + channels[0].op1 : 0x40 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0xC0) | (value & 0x3F));
+		break;
+
+	    case CN_OP1_ATTACK:
+	    case CN_OP2_ATTACK:
+		addr = (number == CN_OP1_ATTACK) ? 0x60 + channels[0].op1 : 0x60 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0x0F) | ((value & 0x0F) << 4));
+		break;
+
+	    case CN_OP1_DECAY:
+	    case CN_OP2_DECAY:
+		addr = (number == CN_OP1_DECAY) ? 0x60 + channels[0].op1 : 0x60 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0xF0) | (value & 0x0F));
+		break;
+
+	    case CN_OP1_SUSTAIN:
+	    case CN_OP2_SUSTAIN:
+		addr = (number == CN_OP1_SUSTAIN) ? 0x80 + channels[0].op1 : 0x80 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0x0F) | ((value & 0x0F) << 4));
+		break;
+
+	    case CN_OP1_RELEASE:
+	    case CN_OP2_RELEASE:
+		addr = (number == CN_OP1_RELEASE) ? 0x80 + channels[0].op1 : 0x80 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0xF0) | (value & 0x0F));
+		break;
+
+	    case CN_OP1_WAVEFORM:
+	    case CN_OP2_WAVEFORM:
+		addr = (number == CN_OP1_WAVEFORM) ? 0xE0 + channels[0].op1 : 0xE0 + channels[0].op2;
+		ym_write_data(addr, (ym_memmap[addr] & 0xFC) | (value & 0x03));
+		break;
+
+	    default:
+		break;
+	}
+}
+
+void handleProgramChange(byte channel, byte number)
+{
+	ym_change_instrument(channel - 1, number);
+}
+
+void midi_init()
+{
+	MIDI.begin(MIDI_CHANNEL_OMNI);
+	MIDI.setHandleNoteOn(handleNoteOn);
+    	MIDI.setHandleNoteOff(handleNoteOff);
+    	MIDI.setHandleControlChange(handleControlChange);
+    	MIDI.setHandleProgramChange(handleProgramChange);
+	Serial.begin(SERIAL_SPEED);
+}
+
+void setup()
+{
+	pinMode(13, OUTPUT);
+	digitalWrite(13, 0);
+
+	setup_audio();
 	initialize_audio();
+
+	//nerve_init();
+	midi_init();
 }
 
-void play_note(byte note, word length)
+void loop()
 {
-	ym_write_data(0xA0, note);
-	ym_write_data(0xB0, 0x31);		// Turn the voice on; set the octave and freq MSB
-	delay(length);
-	ym_write_data(0xB0, 0x11);		// Turn the voice off; set the octave and freq MSB
-	delay(100);
+	//nSerial.check_read();
+
+	MIDI.read();
 }
 
-void run_test()
-{
 
-	play_note(0x98, 800);
-	play_note(0xA0, 800);
-	play_note(0xB0, 800);
-	play_note(0x85, 800);
-	play_note(0x98, 800);
 
 /*
+void run_test()
+{
 	ym_write_data(13, 0xFF);
 	ym_write_data(14, 0xFF);
 	ym_write_data(15, 0x00);
@@ -184,110 +277,8 @@ void run_test()
 	delay(200);
 	set_tone(0, 0);
 	delay(20);
-*/
-}
-
-void command_write()
-{
-	byte addr;
-	byte value;
-
-	addr = strtol(nSerial.get_arg(0), NULL, 0);
-	value = strtol(nSerial.get_arg(1), NULL, 0);
-
-	/*
-	Serial.print("Writing ");
-	Serial.print(addr, HEX);
-	Serial.print(" <- ");
-	Serial.print(value, HEX);
-	Serial.print("\n");
-	*/
-	ym_write_data(addr, value);
-}
-
-void command_default()
-{
-	Serial.print("error\n");
-}
-
-NerveCommand_t command_list[] = {
-	{ "write", 2, command_write },
-/*
-	{ "key", 1, command_key },
-	{ "power", 0, command_power },
-	{ "color", 1, command_color },
-	{ "red", 1, command_red },
-	{ "green", 1, command_green },
-	{ "blue", 1, command_blue },
-	{ "delay", 1, command_delay },
-	{ "channel", 1, command_channel },
-	{ "index", 1, command_index },
-	{ "intensity", 1, command_intensity },
-	{ "chanup", 0, command_chanup },
-	{ "chandown", 0, command_chandown },
-	{ "indexup", 0, command_indexup },
-	{ "indexdown", 0, command_indexdown },
-	{ "calibrate", 1, command_calibrate },
-	{ "version", 0, command_version },
-*/
-	{ 0, 0, command_default }
-};
-
-
-/*
-void do_command(String line)
-{
-	if (line.equals("test")) {
-		run_test();
-	}
-	else if (line.startsWith("write ")) {
-		run_write(line);
-	}
-	else if (line.equals("reset")) {
-		run_reset();
-	}
-	else {
-		Serial.println("No such command");
-	}
 }
 */
-
-void setup()
-{
-	Serial.begin(SERIAL_SPEED);
-	nSerial.set_commands(command_list);
-
-	pinMode(13, OUTPUT);
-	digitalWrite(13, 0);
-
-	setup_audio();
-	initialize_audio();
-
-	//Serial.print("> ");
-}
-
-void loop()
-{
-	//String line = Serial.readString();
-	//do_command(line);
-
-	//flush_write_buffer();
-
-	/*
-	if (read_serial()) {
-		String line = String(serial_rb);
-		clear_read_buffer();
-		Serial.print(line);
-		Serial.print("\n");
-		do_command(line);
-		Serial.print("\n> ");
-	}
-	*/
-
-	nSerial.check_read();
-}
-
-
 
 
 

@@ -44,21 +44,6 @@ class Synth (object):
 
     def on_receive(self, line):
         print("RECV <- " + line)
-        """
-        (ref, _, args) = line.partition(" ")
-        if not ref:
-            return
-        with self.lock:
-            for (i, query) in enumerate(self.waiting):
-                if query.ref == ref:
-                    self.waiting.pop(i)
-                    query.result = args
-                    query.ready.set()
-                    return
-
-        notify_ref = self.get_setting('query').rstrip('/') + '/' + ref + '/*'
-        print(notify_ref)
-        """
 
     def readline(self):
         (rl, wl, el) = select.select([ self.serial ], [ ], [ ], 1)
@@ -77,11 +62,11 @@ class Synth (object):
                         self.on_receive(line)
 
                 except serial.serialutil.SerialException as exc:
-                    print("serial error: " + repr(exc), logtype='error')
+                    print("serial error: " + repr(exc))
                     break
 
                 except:
-                    print(traceback.format_exc(), logtype='error')
+                    print(traceback.format_exc())
 
     def note(self, *args):
         print(args)
@@ -109,9 +94,6 @@ def main():
     synth.send("write 0xb0 0x31\n")
 
     readline.read_history_file(historyfile)
-    #controller = self.make_controller(nerve.Request(self, None, 'QUERY', "/", { }))
-    #readline.set_completer(controller.tab_complete)
-    #readline.parse_and_bind("tab: complete")
 
     while True:
         try:
@@ -119,19 +101,6 @@ def main():
             if line == 'quit':
                 break
             elif line:
-                """
-                request = nerve.Request(self, None, 'QUERY', "/", { 'requests[]' : [ line ] }, headers=dict(accept='text/plain, text/html, application/json'))
-                controller.handle_request(request)
-                mimetype = controller.get_mimetype()
-                output = controller.get_output()
-
-                if mimetype == 'application/json':
-                    data = json.loads(output.decode('utf-8'))
-                    if data and data[0]:
-                        print('\n'.join([ str(val) for val in data ]))
-                else:
-                    print(output.decode('utf-8'))
-                """
                 args = shlex.split(line)
                 if (args[0] == 'delay'):
                     time.sleep(float(args[1]))

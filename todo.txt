@@ -1,0 +1,12 @@
+
+
+- So this is the data using a 3.58MHz clock.  The adlib/soundblaster used a 14.31818 which is exactly 4 times higher.
+  At the higher clock, octave 0 would instead be octave 4
+
+C4 - 262Hz:
+write 0x20 0x01 to select 0 frequency multiple
+write 0xa0 0xae
+write 0xb0 0x32
+(select octave 0 and f-number 0x2ae)
+
+
