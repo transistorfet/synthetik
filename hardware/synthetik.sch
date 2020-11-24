@@ -1,0 +1,762 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 3
+Title "Synthetik"
+Date ""
+Rev "1"
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L 74xx:74HC14 U2
+U 3 1 5FA75167
+P 5200 3850
+F 0 "U2" H 5200 4167 50  0000 C CNN
+F 1 "74HC14" H 5200 4076 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket_LongPads" H 5200 3850 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5200 3850 50  0001 C CNN
+	3    5200 3850
+	1    0    0    1   
+$EndComp
+$Comp
+L 74xx:74HC14 U2
+U 1 1 5FAADF58
+P 4750 1300
+F 0 "U2" H 4750 1617 50  0000 C CNN
+F 1 "74HC14" H 4750 1526 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket_LongPads" H 4750 1300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 4750 1300 50  0001 C CNN
+	1    4750 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC14 U2
+U 2 1 5FAADF5E
+P 5350 1300
+F 0 "U2" H 5350 1617 50  0000 C CNN
+F 1 "74HC14" H 5350 1526 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket_LongPads" H 5350 1300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 5350 1300 50  0001 C CNN
+	2    5350 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Crystal Y1
+U 1 1 5FAADF70
+P 5050 900
+F 0 "Y1" H 5050 1168 50  0000 C CNN
+F 1 "3.58 MHz" H 5050 1077 50  0000 C CNN
+F 2 "Crystal:Crystal_HC49-4H_Vertical" H 5050 900 50  0001 C CNN
+F 3 "~" H 5050 900 50  0001 C CNN
+	1    5050 900 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4900 900  4450 900 
+Wire Wire Line
+	4450 900  4450 1300
+Wire Wire Line
+	4450 1300 4450 1700
+Wire Wire Line
+	4450 1700 4600 1700
+Connection ~ 4450 1300
+Wire Wire Line
+	4800 1700 5050 1700
+Wire Wire Line
+	5050 1700 5050 1300
+Connection ~ 5050 1300
+Wire Wire Line
+	5050 1700 5250 1700
+Connection ~ 5050 1700
+Wire Wire Line
+	5450 1700 5650 1700
+Wire Wire Line
+	5650 1700 5650 1300
+Wire Wire Line
+	5650 1300 5650 900 
+Wire Wire Line
+	5650 900  5200 900 
+Connection ~ 5650 1300
+Text GLabel 5900 1300 2    50   Output ~ 0
+CLK-3.58
+Wire Wire Line
+	5650 1300 5900 1300
+$Comp
+L Device:R_Small R5
+U 1 1 5FAB1AF6
+P 5350 1700
+F 0 "R5" V 5200 1700 50  0000 C CNN
+F 1 "5.1k" V 5275 1700 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" H 5350 1700 50  0001 C CNN
+F 3 "~" H 5350 1700 50  0001 C CNN
+	1    5350 1700
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_Small R4
+U 1 1 5FABC9A1
+P 4700 1700
+F 0 "R4" V 4550 1700 50  0000 C CNN
+F 1 "5.1k" V 4625 1700 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" H 4700 1700 50  0001 C CNN
+F 3 "~" H 4700 1700 50  0001 C CNN
+	1    4700 1700
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_Small R2
+U 1 1 5FAA2C28
+P 2800 1500
+F 0 "R2" H 2859 1546 50  0000 L CNN
+F 1 "4.7k" H 2859 1455 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" H 2800 1500 50  0001 C CNN
+F 3 "~" H 2800 1500 50  0001 C CNN
+	1    2800 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:DIN-5_180degree J1
+U 1 1 5FA72BA3
+P 1150 1450
+F 0 "J1" H 1150 1175 50  0000 C CNN
+F 1 "MIDI-IN" H 1150 1084 50  0000 C CNN
+F 2 "Eurocard:MIDI_DIN5" H 1150 1450 50  0001 C CNN
+F 3 "http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf" H 1150 1450 50  0001 C CNN
+	1    1150 1450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 1300 2100 1700
+Wire Wire Line
+	1950 1100 2100 1100
+Connection ~ 1950 1100
+Wire Wire Line
+	1850 1100 1950 1100
+$Comp
+L Diode:1N4148 D1
+U 1 1 5FA961C5
+P 1950 1400
+F 0 "D1" V 1900 1300 50  0000 R CNN
+F 1 "1N4148" V 2000 1300 50  0000 R CNN
+F 2 "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal" H 1950 1225 50  0001 C CNN
+F 3 "https://assets.nexperia.com/documents/data-sheet/1N4148_1N4448.pdf" H 1950 1400 50  0001 C CNN
+	1    1950 1400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_Small R1
+U 1 1 5FA94A93
+P 1750 1100
+F 0 "R1" V 1600 1100 50  0000 C CNN
+F 1 "220" V 1675 1100 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" H 1750 1100 50  0001 C CNN
+F 3 "~" H 1750 1100 50  0001 C CNN
+	1    1750 1100
+	0    1    1    0   
+$EndComp
+$Comp
+L Isolator:6N138 U1
+U 1 1 5FA722EB
+P 2400 1200
+F 0 "U1" H 2400 1667 50  0000 C CNN
+F 1 "6N138" H 2400 1576 50  0000 C CNN
+F 2 "Package_DIP:DIP-8_W7.62mm_LongPads" H 2690 900 50  0001 C CNN
+F 3 "http://www.onsemi.com/pub/Collateral/HCPL2731-D.pdf" H 2690 900 50  0001 C CNN
+	1    2400 1200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Small R3
+U 1 1 5FA73C50
+P 2900 1150
+F 0 "R3" H 2959 1196 50  0000 L CNN
+F 1 "220" H 2959 1105 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" H 2900 1150 50  0001 C CNN
+F 3 "~" H 2900 1150 50  0001 C CNN
+	1    2900 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR03
+U 1 1 5FABC58F
+P 2700 1700
+F 0 "#PWR03" H 2700 1450 50  0001 C CNN
+F 1 "GND" H 2705 1527 50  0000 C CNN
+F 2 "" H 2700 1700 50  0001 C CNN
+F 3 "" H 2700 1700 50  0001 C CNN
+	1    2700 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR04
+U 1 1 5FABCC35
+P 2900 900
+F 0 "#PWR04" H 2900 750 50  0001 C CNN
+F 1 "+5V" H 2915 1073 50  0000 C CNN
+F 2 "" H 2900 900 50  0001 C CNN
+F 3 "" H 2900 900 50  0001 C CNN
+	1    2900 900 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 1400 2700 1650
+Connection ~ 2700 1650
+Wire Wire Line
+	2800 1400 2800 1100
+Wire Wire Line
+	2800 1100 2700 1100
+Wire Wire Line
+	2800 1650 2700 1650
+Wire Wire Line
+	2800 1650 2800 1600
+Wire Wire Line
+	2700 1700 2700 1650
+Wire Wire Line
+	2700 1000 2900 1000
+Wire Wire Line
+	2900 900  2900 1000
+Wire Wire Line
+	2900 1300 2700 1300
+Wire Wire Line
+	2900 1300 3100 1300
+Connection ~ 2900 1300
+Text GLabel 3650 1300 2    50   Output ~ 0
+MIDI-Rx
+Wire Wire Line
+	1950 1100 1950 1250
+Wire Wire Line
+	1950 1550 1950 1700
+Wire Wire Line
+	1950 1700 2100 1700
+Wire Wire Line
+	2900 1250 2900 1300
+Wire Wire Line
+	2900 1050 2900 1000
+Connection ~ 2900 1000
+$Comp
+L power:+5V #PWR01
+U 1 1 5FB1E960
+P 1250 6700
+F 0 "#PWR01" H 1250 6550 50  0001 C CNN
+F 1 "+5V" H 1265 6873 50  0000 C CNN
+F 2 "" H 1250 6700 50  0001 C CNN
+F 3 "" H 1250 6700 50  0001 C CNN
+	1    1250 6700
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR02
+U 1 1 5FB23AB1
+P 1450 7250
+F 0 "#PWR02" H 1450 7000 50  0001 C CNN
+F 1 "GND" H 1455 7077 50  0000 C CNN
+F 2 "" H 1450 7250 50  0001 C CNN
+F 3 "" H 1450 7250 50  0001 C CNN
+	1    1450 7250
+	1    0    0    -1  
+$EndComp
+$Comp
+L ArduinoShields:Arduino_Mega2560_Shield XA1
+U 1 1 5FAF5287
+P 2950 5000
+F 0 "XA1" H 2950 2619 60  0000 C CNN
+F 1 "Arduino_Mega2560_Shield" H 2950 2513 60  0000 C CNN
+F 2 "Synthetik:Arduino_Mega2560_Shield" H 3650 7750 60  0001 C CNN
+F 3 "https://store.arduino.cc/arduino-mega-2560-rev3" H 3650 7750 60  0001 C CNN
+	1    2950 5000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 6850 1250 6850
+Wire Wire Line
+	1250 6850 1250 6700
+Wire Wire Line
+	1650 6950 1250 6950
+Connection ~ 1250 6850
+Wire Wire Line
+	1650 7050 1250 7050
+Wire Wire Line
+	1250 6850 1250 6950
+Connection ~ 1250 6950
+Wire Wire Line
+	1250 6950 1250 7050
+Wire Wire Line
+	1450 7250 1450 6650
+Wire Wire Line
+	1450 6250 1650 6250
+Wire Wire Line
+	1650 6650 1450 6650
+Connection ~ 1450 6650
+Wire Wire Line
+	1450 6650 1450 6550
+Wire Wire Line
+	1650 6550 1450 6550
+Connection ~ 1450 6550
+Wire Wire Line
+	1450 6550 1450 6450
+Wire Wire Line
+	1650 6450 1450 6450
+Connection ~ 1450 6450
+Wire Wire Line
+	1450 6450 1450 6350
+Wire Wire Line
+	1650 6350 1450 6350
+Connection ~ 1450 6350
+Wire Wire Line
+	1450 6350 1450 6250
+Text GLabel 1400 3050 0    50   Input ~ 0
+MIDI-Rx
+Wire Wire Line
+	1400 3050 1650 3050
+Text GLabel 4500 3150 2    50   Output ~ 0
+RESET
+Wire Wire Line
+	4500 3150 4250 3150
+Text GLabel 1000 3950 0    50   BiDi ~ 0
+D[0..7]
+Text GLabel 5600 3450 2    50   Output ~ 0
+RW
+Text GLabel 5600 3850 2    50   Output ~ 0
+RD
+Text GLabel 5600 3600 2    50   Output ~ 0
+WR
+Wire Wire Line
+	5600 3450 4900 3450
+Wire Wire Line
+	4900 3450 4900 3600
+Wire Wire Line
+	5600 3600 4900 3600
+Connection ~ 4900 3600
+Wire Wire Line
+	4900 3600 4900 3850
+Wire Wire Line
+	5500 3850 5600 3850
+Text GLabel 4500 3250 2    50   Output ~ 0
+CS-1
+Text GLabel 4500 3350 2    50   Output ~ 0
+CS-2
+Text GLabel 4500 3450 2    50   Output ~ 0
+CS-3
+$Sheet
+S 9700 1000 650  150 
+U 5FB17596
+F0 "AudioChips" 50
+F1 "AudioChips.sch" 50
+$EndSheet
+$Comp
+L 74xx:74HC14 U2
+U 5 1 5FB1BAC1
+P 7650 1300
+F 0 "U2" H 7650 1617 50  0000 C CNN
+F 1 "74HC14" H 7650 1526 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket_LongPads" H 7650 1300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 7650 1300 50  0001 C CNN
+	5    7650 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Crystal Y2
+U 1 1 5FB1BACB
+P 7050 1750
+F 0 "Y2" H 7050 2018 50  0000 C CNN
+F 1 "14.31 MHz" H 7050 1927 50  0000 C CNN
+F 2 "Crystal:Crystal_HC49-4H_Vertical" H 7050 1750 50  0001 C CNN
+F 3 "~" H 7050 1750 50  0001 C CNN
+	1    7050 1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6900 1750 6750 1750
+Wire Wire Line
+	7350 1750 7200 1750
+Text GLabel 8100 1300 2    50   Output ~ 0
+CLK-14.31
+Wire Wire Line
+	7950 1300 8100 1300
+$Comp
+L Device:C_Small C?
+U 1 1 5FB3A24C
+P 6750 1950
+AR Path="/5FB17596/5FB3A24C" Ref="C?"  Part="1" 
+AR Path="/5FB3A24C" Ref="C1"  Part="1" 
+F 0 "C1" H 6842 1996 50  0000 L CNN
+F 1 "22pF" H 6842 1905 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm" H 6750 1950 50  0001 C CNN
+F 3 "~" H 6750 1950 50  0001 C CNN
+	1    6750 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 5FB49FBA
+P 7350 1950
+AR Path="/5FB17596/5FB49FBA" Ref="C?"  Part="1" 
+AR Path="/5FB49FBA" Ref="C2"  Part="1" 
+F 0 "C2" H 7442 1996 50  0000 L CNN
+F 1 "22pF" H 7442 1905 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm" H 7350 1950 50  0001 C CNN
+F 3 "~" H 7350 1950 50  0001 C CNN
+	1    7350 1950
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR05
+U 1 1 5FB55C28
+P 6750 2050
+F 0 "#PWR05" H 6750 1800 50  0001 C CNN
+F 1 "GND" H 6755 1877 50  0000 C CNN
+F 2 "" H 6750 2050 50  0001 C CNN
+F 3 "" H 6750 2050 50  0001 C CNN
+	1    6750 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR06
+U 1 1 5FB56DD1
+P 7350 2050
+F 0 "#PWR06" H 7350 1800 50  0001 C CNN
+F 1 "GND" H 7355 1877 50  0000 C CNN
+F 2 "" H 7350 2050 50  0001 C CNN
+F 3 "" H 7350 2050 50  0001 C CNN
+	1    7350 2050
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xx:74HC14 U2
+U 4 1 5FB57D73
+P 7050 1300
+F 0 "U2" H 7050 1617 50  0000 C CNN
+F 1 "74HC14" H 7050 1526 50  0000 C CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket_LongPads" H 7050 1300 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 7050 1300 50  0001 C CNN
+	4    7050 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Small R6
+U 1 1 5FB69093
+P 7050 850
+F 0 "R6" V 6900 850 50  0000 C CNN
+F 1 "1M" V 6975 850 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal" H 7050 850 50  0001 C CNN
+F 3 "~" H 7050 850 50  0001 C CNN
+	1    7050 850 
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6750 1850 6750 1750
+Wire Wire Line
+	6750 850  6950 850 
+Connection ~ 6750 1300
+Wire Wire Line
+	6750 1300 6750 850 
+Connection ~ 6750 1750
+Wire Wire Line
+	6750 1750 6750 1300
+Wire Wire Line
+	7150 850  7350 850 
+Wire Wire Line
+	7350 850  7350 1300
+Connection ~ 7350 1300
+Wire Wire Line
+	7350 1300 7350 1750
+Connection ~ 7350 1750
+Wire Wire Line
+	7350 1750 7350 1850
+$Sheet
+S 9700 1550 650  150 
+U 604AEF91
+F0 "AudioOut" 50
+F1 "AudioOut.sch" 50
+$EndSheet
+Text GLabel 4500 3550 2    50   Output ~ 0
+CS-4
+Text GLabel 4500 3650 2    50   Output ~ 0
+A0
+Text GLabel 4500 3750 2    50   Output ~ 0
+A1
+Connection ~ 4900 3850
+$Comp
+L power:GND #PWR08
+U 1 1 607E9590
+P 7400 4800
+F 0 "#PWR08" H 7400 4550 50  0001 C CNN
+F 1 "GND" H 7405 4627 50  0000 C CNN
+F 2 "" H 7400 4800 50  0001 C CNN
+F 3 "" H 7400 4800 50  0001 C CNN
+	1    7400 4800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR07
+U 1 1 607EB101
+P 7400 3600
+F 0 "#PWR07" H 7400 3450 50  0001 C CNN
+F 1 "+5V" H 7415 3773 50  0000 C CNN
+F 2 "" H 7400 3600 50  0001 C CNN
+F 3 "" H 7400 3600 50  0001 C CNN
+	1    7400 3600
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 607EBC21
+P 8050 4200
+AR Path="/5FB17596/607EBC21" Ref="C?"  Part="1" 
+AR Path="/607EBC21" Ref="C3"  Part="1" 
+F 0 "C3" H 8142 4246 50  0000 L CNN
+F 1 "0.1uF" H 8142 4155 50  0000 L CNN
+F 2 "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm" H 8050 4200 50  0001 C CNN
+F 3 "~" H 8050 4200 50  0001 C CNN
+	1    8050 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7400 3600 7400 3650
+Wire Wire Line
+	8050 4100 8050 3650
+Wire Wire Line
+	8050 3650 7400 3650
+Connection ~ 7400 3650
+Wire Wire Line
+	7400 3650 7400 3700
+Wire Wire Line
+	8050 4300 8050 4750
+Wire Wire Line
+	8050 4750 7400 4750
+Wire Wire Line
+	7400 4700 7400 4750
+Connection ~ 7400 4750
+Wire Wire Line
+	7400 4750 7400 4800
+$Comp
+L 74xx:74HC14 U2
+U 7 1 5FA76EA0
+P 7400 4200
+F 0 "U2" H 7630 4246 50  0000 L CNN
+F 1 "74HC14" H 7630 4155 50  0000 L CNN
+F 2 "Package_DIP:DIP-14_W7.62mm_Socket_LongPads" H 7400 4200 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74HC14" H 7400 4200 50  0001 C CNN
+	7    7400 4200
+	1    0    0    -1  
+$EndComp
+Entry Wire Line
+	1250 4050 1350 4150
+Wire Wire Line
+	1350 4150 1650 4150
+Entry Wire Line
+	1250 4150 1350 4250
+Text Label 1350 4250 0    50   ~ 0
+D1
+Text Label 1350 4150 0    50   ~ 0
+D0
+Wire Wire Line
+	1350 4250 1650 4250
+Entry Wire Line
+	1250 4250 1350 4350
+Wire Wire Line
+	1350 4350 1650 4350
+Entry Wire Line
+	1250 4350 1350 4450
+Text Label 1350 4450 0    50   ~ 0
+D3
+Text Label 1350 4350 0    50   ~ 0
+D2
+Wire Wire Line
+	1350 4450 1650 4450
+Entry Wire Line
+	1250 4450 1350 4550
+Wire Wire Line
+	1350 4550 1650 4550
+Entry Wire Line
+	1250 4550 1350 4650
+Text Label 1350 4650 0    50   ~ 0
+D5
+Text Label 1350 4550 0    50   ~ 0
+D4
+Wire Wire Line
+	1350 4650 1650 4650
+Entry Wire Line
+	1250 4650 1350 4750
+Wire Wire Line
+	1350 4750 1650 4750
+Entry Wire Line
+	1250 4750 1350 4850
+Text Label 1350 4850 0    50   ~ 0
+D7
+Text Label 1350 4750 0    50   ~ 0
+D6
+Wire Wire Line
+	1350 4850 1650 4850
+Wire Bus Line
+	1000 3950 1250 3950
+Wire Wire Line
+	4250 3850 4900 3850
+Wire Wire Line
+	4250 3750 4500 3750
+Wire Wire Line
+	4500 3650 4250 3650
+Wire Wire Line
+	4250 3550 4500 3550
+Wire Wire Line
+	4500 3450 4250 3450
+Wire Wire Line
+	4250 3350 4500 3350
+Wire Wire Line
+	4250 3250 4500 3250
+NoConn ~ 1650 2950
+NoConn ~ 1650 3250
+NoConn ~ 1650 3150
+NoConn ~ 1650 3350
+NoConn ~ 1650 3450
+NoConn ~ 1650 3550
+NoConn ~ 1650 3650
+NoConn ~ 1650 3750
+NoConn ~ 1650 3850
+NoConn ~ 1650 3950
+NoConn ~ 2700 2400
+NoConn ~ 2800 2400
+NoConn ~ 2900 2400
+NoConn ~ 3000 2400
+NoConn ~ 3100 2400
+NoConn ~ 3200 2400
+NoConn ~ 4250 2850
+NoConn ~ 4250 2950
+NoConn ~ 4250 3950
+NoConn ~ 4250 4050
+NoConn ~ 4250 4150
+NoConn ~ 4250 4250
+NoConn ~ 4250 4350
+NoConn ~ 4250 4450
+NoConn ~ 4250 4550
+NoConn ~ 4250 4650
+NoConn ~ 4250 4750
+NoConn ~ 4250 4850
+NoConn ~ 4250 4950
+NoConn ~ 4250 5050
+NoConn ~ 4250 5150
+NoConn ~ 4250 5250
+NoConn ~ 4250 5350
+NoConn ~ 4250 5450
+NoConn ~ 4250 5550
+NoConn ~ 4250 5650
+NoConn ~ 4250 5750
+NoConn ~ 4250 5850
+NoConn ~ 4250 5950
+NoConn ~ 4250 6050
+NoConn ~ 4250 6150
+NoConn ~ 4250 6250
+NoConn ~ 4250 6350
+NoConn ~ 4250 6450
+NoConn ~ 4250 6550
+NoConn ~ 4250 6650
+NoConn ~ 4250 6750
+NoConn ~ 4250 6850
+NoConn ~ 4250 6950
+NoConn ~ 4250 7050
+NoConn ~ 4250 7150
+NoConn ~ 1650 7150
+NoConn ~ 1650 6750
+NoConn ~ 1650 6050
+NoConn ~ 1650 5750
+NoConn ~ 1650 5650
+NoConn ~ 1650 5550
+NoConn ~ 1650 5450
+NoConn ~ 1650 5350
+NoConn ~ 1650 5250
+NoConn ~ 1650 5150
+NoConn ~ 1650 5050
+NoConn ~ 1650 4950
+NoConn ~ 850  1450
+NoConn ~ 1150 1150
+NoConn ~ 1650 2850
+Wire Wire Line
+	3500 1300 3650 1300
+$Comp
+L Switch:SW_Push SW1
+U 1 1 5FB76B65
+P 1150 5950
+F 0 "SW1" H 1150 6235 50  0000 C CNN
+F 1 "RESET" H 1150 6144 50  0000 C CNN
+F 2 "Button_Switch_THT:SW_PUSH_6mm" H 1150 6150 50  0001 C CNN
+F 3 "~" H 1150 6150 50  0001 C CNN
+	1    1150 5950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1650 5950 1350 5950
+Wire Wire Line
+	950  5950 950  6250
+Wire Wire Line
+	950  6250 1450 6250
+Connection ~ 1450 6250
+NoConn ~ 1450 1450
+Wire Wire Line
+	1650 1100 700  1100
+Wire Wire Line
+	700  1100 700  1350
+Wire Wire Line
+	700  1350 850  1350
+Wire Wire Line
+	1450 1350 1550 1350
+Wire Wire Line
+	1550 1350 1550 1700
+Wire Wire Line
+	1550 1700 1950 1700
+Connection ~ 1950 1700
+$Comp
+L Jumper:Jumper_2_Bridged JP1
+U 1 1 5FBA7673
+P 3300 1300
+F 0 "JP1" H 3300 1495 50  0000 C CNN
+F 1 "." H 3300 1404 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 3300 1300 50  0001 C CNN
+F 3 "~" H 3300 1300 50  0001 C CNN
+	1    3300 1300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 1300 3100 1450
+Wire Wire Line
+	3100 1450 3500 1450
+Wire Wire Line
+	3500 1450 3500 1300
+Connection ~ 3100 1300
+Connection ~ 3500 1300
+$Comp
+L Switch:SW_Push SW2
+U 1 1 5FBF1966
+P 4650 3050
+F 0 "SW2" H 4650 3335 50  0000 C CNN
+F 1 "DEMO" H 4650 3244 50  0000 C CNN
+F 2 "Button_Switch_THT:SW_PUSH_6mm" H 4650 3250 50  0001 C CNN
+F 3 "~" H 4650 3250 50  0001 C CNN
+	1    4650 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 3050 4250 3050
+$Comp
+L power:GND #PWR046
+U 1 1 5FC12FAD
+P 5000 3100
+F 0 "#PWR046" H 5000 2850 50  0001 C CNN
+F 1 "GND" H 5005 2927 50  0000 C CNN
+F 2 "" H 5000 3100 50  0001 C CNN
+F 3 "" H 5000 3100 50  0001 C CNN
+	1    5000 3100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4850 3050 5000 3050
+Wire Wire Line
+	5000 3050 5000 3100
+Wire Bus Line
+	1250 3950 1250 4750
+$EndSCHEMATC

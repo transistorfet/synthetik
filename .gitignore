@@ -1,3 +1,14 @@
 .*.swp
 *.pyc
 __pycache__
+*.o
+
+# EDA Output Files
+*.gbr
+*.drl
+*gbrjob
+*-bak
+*.bak
+*.bck
+fp-info-cache
+

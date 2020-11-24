@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name ArduinoShields)(type Legacy)(uri ${KIPRJMOD}/arduino-kicad-library/arduino.lib)(options "")(descr ""))
+  (lib (name AudioChips)(type Legacy)(uri ${KIPRJMOD}/AudioChips.lib)(options "")(descr ""))
+)

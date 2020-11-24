@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name Eurocard)(type KiCad)(uri /home/trans/.local/share/kicad/eurocad/Eurocad.pretty)(options "")(descr ""))
+  (lib (name Synthetik)(type KiCad)(uri ${KIPRJMOD}/Synthetik.pretty)(options "")(descr ""))
+)
