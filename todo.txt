@@ -1,12 +1,41 @@
 
+* add a reset button on top
 
-- So this is the data using a 3.58MHz clock.  The adlib/soundblaster used a 14.31818 which is exactly 4 times higher.
-  At the higher clock, octave 0 would instead be octave 4
+* should you move the audio pot to only control the power amp volume and not the line in volume?
 
-C4 - 262Hz:
-write 0x20 0x01 to select 0 frequency multiple
-write 0xa0 0xae
-write 0xb0 0x32
-(select octave 0 and f-number 0x2ae)
+* verify resistor sizing for the mixer section
 
+* make sure the drill files show holes for the mounting pins of the midi jack
+
+
+* can I add some helpful things to avoid desoldering?
+	* ability to bypass the onboard amps?
+	* ability to easily swap out resistor values for amp gain
+
+* check out the output of various line out devices on the scope to see if their output is centered around 0 with + and - voltage, or if it's all positive...
+
+
+
+PLANNING:
+
+* should you use an uno or a mega?  It might be good to have more ram for the instruments??
+* later revision could have an integrated arduino or STM32
+* should you add another type of output, like RCA?
+* should you add jumpers or switches to turn on/off certain channels?
+
+* I'm thinking 4 chips is sufficient, AY, OPNx, OPLx, and maybe OPM
+* need to buy more YM2151, YM2413, and maybe YM2164 and YMF278?
+
+* chips that could be used
+	AY-3-8910/YM2149
+	YM2612/YM3438 (OPN2/OPN2C, might need different audio output resistors to work for either)
+	YM3812 (OPL2)
+	YMF262 (OPL3)
+	YMF278 (OPL4?? I don't think I have one)
+	YMF288 (OPN3)
+	YM2151 (OPM)
+	YM2164 (OPP)
+	YM2413 (OPLL, maybe overkill)
+	SN76496 (but I couldn't get it working on the breadboard)
+	YM2608/YM2610
 

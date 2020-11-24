@@ -26,6 +26,7 @@ struct instrument {
 
 void setup_audio();
 void initialize_audio();
+void ym_reset();
 void ym_change_instrument(byte channel, byte number);
 void ym_note_on(byte channel, byte note);
 void ym_note_off(byte channel, byte note);

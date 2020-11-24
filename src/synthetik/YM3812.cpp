@@ -12,6 +12,7 @@
 #define YM_WR		40
 #define YM_A0		41
 #define YM_RESET	50
+#define YM_A1		51
 
 #define YM_HIHAT	0
 #define YM_CYMBAL	1
@@ -74,11 +75,13 @@ void setup_audio()
 	pinMode(YM_RD, OUTPUT);
 	pinMode(YM_WR, OUTPUT);
 	pinMode(YM_A0, OUTPUT);
+	pinMode(YM_A1, OUTPUT);
 	pinMode(YM_RESET, OUTPUT);
 	digitalWrite(YM_CS, 1);
 	digitalWrite(YM_RD, 1);
 	digitalWrite(YM_WR, 1);
 	digitalWrite(YM_A0, 0);
+	digitalWrite(YM_A1, 0);
 	digitalWrite(YM_RESET, 1);
 
 	// Data Bus
@@ -109,9 +112,7 @@ void ym_set_instrument(byte channel, struct instrument *config)
 
 void initialize_audio()
 {
-	digitalWrite(YM_RESET, 0);
-	delay(10);
-	digitalWrite(YM_RESET, 1);
+	ym_reset();
 
 	ym_write_data(0x01, 0x10);
 
@@ -133,6 +134,13 @@ void initialize_audio()
 	ym_write_data(0xB0, 0x11);		// Turn the voice off; set the octave and freq MSB
 }
 
+void ym_reset()
+{
+	digitalWrite(YM_RESET, 0);
+	delay(10);
+	digitalWrite(YM_RESET, 1);
+	delay(10);
+}
 
 struct instrument *instrument_select(byte number)
 {

@@ -1,0 +1,11 @@
+
+Starting TTY Midi Bridge:
+
+cd /media/work/Reference/Arduino/ttymidi
+./ttymidi -s /dev/ttyACM2 -v
+
+
+Connect VMPK to tty:
+
+aconnect 130:0 128:1
+
