@@ -130,7 +130,7 @@ void initialize_audio()
 
 
 	ym_write_data(0xB0, 0x31);		// Turn the voice on; set the octave and freq MSB
-	delay(1000);
+	delay(2000);
 	ym_write_data(0xB0, 0x11);		// Turn the voice off; set the octave and freq MSB
 }
 

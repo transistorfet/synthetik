@@ -806,11 +806,11 @@ F 3 "" H 2150 6350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3650 4900 3650 5000
+	3650 4900 3650 5250
 Wire Wire Line
 	2900 4900 3650 4900
 Wire Wire Line
-	3650 4800 3650 4500
+	3650 4800 3650 4350
 Wire Wire Line
 	2900 4800 3650 4800
 Wire Wire Line
@@ -1097,73 +1097,60 @@ Wire Wire Line
 	4150 1900 4150 1600
 Connection ~ 4150 1600
 Wire Wire Line
-	4050 4650 4100 4650
+	4050 4500 4100 4500
 Wire Wire Line
-	4050 5150 4100 5150
-Text GLabel 4100 5150 2    50   Output ~ 0
+	4050 5400 4100 5400
+Text GLabel 4100 5400 2    50   Output ~ 0
 A2-RIGHT
-Text GLabel 4100 4650 2    50   Output ~ 0
+Text GLabel 4100 4500 2    50   Output ~ 0
 A2-LEFT
 $Comp
 L Device:R_POT_Small RV1
 U 1 1 5FE48E70
-P 3950 4650
+P 3950 4500
 AR Path="/5FB17596/5FE48E70" Ref="RV1"  Part="1" 
 AR Path="/604A78D6/5FE48E70" Ref="RV?"  Part="1" 
-F 0 "RV1" H 3890 4696 50  0000 R CNN
-F 1 "10k" H 3890 4605 50  0000 R CNN
-F 2 "Potentiometer_THT:Potentiometer_Bourns_3386P_Vertical" H 3950 4650 50  0001 C CNN
-F 3 "~" H 3950 4650 50  0001 C CNN
-	1    3950 4650
+F 0 "RV1" H 3890 4546 50  0000 R CNN
+F 1 "10k" H 3890 4455 50  0000 R CNN
+F 2 "Potentiometer_THT:Potentiometer_Bourns_3386P_Vertical" H 3950 4500 50  0001 C CNN
+F 3 "~" H 3950 4500 50  0001 C CNN
+	1    3950 4500
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR018
 U 1 1 5FE48E7C
-P 3950 4750
+P 3950 4900
 AR Path="/5FB17596/5FE48E7C" Ref="#PWR018"  Part="1" 
 AR Path="/604A78D6/5FE48E7C" Ref="#PWR?"  Part="1" 
-F 0 "#PWR018" H 3950 4500 50  0001 C CNN
-F 1 "GND" H 3955 4577 50  0000 C CNN
-F 2 "" H 3950 4750 50  0001 C CNN
-F 3 "" H 3950 4750 50  0001 C CNN
-	1    3950 4750
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR019
-U 1 1 5FDD0841
-P 3950 5250
-AR Path="/5FB17596/5FDD0841" Ref="#PWR019"  Part="1" 
-AR Path="/604A78D6/5FDD0841" Ref="#PWR?"  Part="1" 
-F 0 "#PWR019" H 3950 5000 50  0001 C CNN
-F 1 "GND" H 3955 5077 50  0000 C CNN
-F 2 "" H 3950 5250 50  0001 C CNN
-F 3 "" H 3950 5250 50  0001 C CNN
-	1    3950 5250
+F 0 "#PWR018" H 3950 4650 50  0001 C CNN
+F 1 "GND" H 3955 4727 50  0000 C CNN
+F 2 "" H 3950 4900 50  0001 C CNN
+F 3 "" H 3950 4900 50  0001 C CNN
+	1    3950 4900
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R_POT_Small RV2
 U 1 1 5FDD0835
-P 3950 5150
+P 3950 5400
 AR Path="/5FB17596/5FDD0835" Ref="RV2"  Part="1" 
 AR Path="/604A78D6/5FDD0835" Ref="RV?"  Part="1" 
-F 0 "RV2" H 3890 5196 50  0000 R CNN
-F 1 "10k" H 3890 5105 50  0000 R CNN
-F 2 "Potentiometer_THT:Potentiometer_Bourns_3386P_Vertical" H 3950 5150 50  0001 C CNN
-F 3 "~" H 3950 5150 50  0001 C CNN
-	1    3950 5150
+F 0 "RV2" H 3890 5446 50  0000 R CNN
+F 1 "10k" H 3890 5355 50  0000 R CNN
+F 2 "Potentiometer_THT:Potentiometer_Bourns_3386P_Vertical" H 3950 5400 50  0001 C CNN
+F 3 "~" H 3950 5400 50  0001 C CNN
+	1    3950 5400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3950 4500 3950 4550
+	3950 4350 3950 4400
 Wire Wire Line
-	3950 5000 3950 5050
+	3950 5250 3950 5300
 Wire Wire Line
-	3650 4500 3950 4500
+	3650 4350 3950 4350
 Wire Wire Line
-	3650 5000 3950 5000
+	3650 5250 3950 5250
 $Comp
 L power:GND #PWR017
 U 1 1 5FF8DECD
@@ -1222,6 +1209,45 @@ F 2 "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm" H 3350 4550 50  0001 C CNN
 F 3 "~" H 3350 4550 50  0001 C CNN
 	1    3350 4550
 	0    -1   1    0   
+$EndComp
+$Comp
+L Jumper:SolderJumper_2_Bridged JP?
+U 1 1 5FC7D21C
+P 3950 4750
+AR Path="/604AEF91/5FC7D21C" Ref="JP?"  Part="1" 
+AR Path="/5FB17596/5FC7D21C" Ref="JP4"  Part="1" 
+F 0 "JP4" H 3950 4955 50  0000 C CNN
+F 1 "." H 3950 4864 50  0000 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm" H 3950 4750 50  0001 C CNN
+F 3 "~" H 3950 4750 50  0001 C CNN
+	1    3950 4750
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR019
+U 1 1 5FCC27BE
+P 3950 5800
+AR Path="/5FB17596/5FCC27BE" Ref="#PWR019"  Part="1" 
+AR Path="/604A78D6/5FCC27BE" Ref="#PWR?"  Part="1" 
+F 0 "#PWR019" H 3950 5550 50  0001 C CNN
+F 1 "GND" H 3955 5627 50  0000 C CNN
+F 2 "" H 3950 5800 50  0001 C CNN
+F 3 "" H 3950 5800 50  0001 C CNN
+	1    3950 5800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Jumper:SolderJumper_2_Bridged JP?
+U 1 1 5FCC2996
+P 3950 5650
+AR Path="/604AEF91/5FCC2996" Ref="JP?"  Part="1" 
+AR Path="/5FB17596/5FCC2996" Ref="JP5"  Part="1" 
+F 0 "JP5" H 3950 5855 50  0000 C CNN
+F 1 "." H 3950 5764 50  0000 C CNN
+F 2 "Jumper:SolderJumper-2_P1.3mm_Bridged_RoundedPad1.0x1.5mm" H 3950 5650 50  0001 C CNN
+F 3 "~" H 3950 5650 50  0001 C CNN
+	1    3950 5650
+	0    1    1    0   
 $EndComp
 Wire Bus Line
 	1600 4500 1600 5300
