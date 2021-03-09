@@ -2,6 +2,7 @@
 #include "NerveSerial.h"
 #include "YM3812.h"
 #include "YM3438.h"
+#include "AY3.h"
 
 #include <MIDI.h>
 
@@ -19,7 +20,7 @@ void command_write()
 	addr = strtol(nSerial.get_arg(0), NULL, 0);
 	value = strtol(nSerial.get_arg(1), NULL, 0);
 
-	ym_write_data(addr, value);
+	opl_write_data(addr, value);
 }
 
 void command_reset()
@@ -52,158 +53,39 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 void handleNoteOn(byte channel, byte note, byte velocity)
 {
 	if (channel == 10) {
-		ym_drum_on(note);
+		//opn_drum_on(note);
 	}
 	else {
 		if (velocity)
-			ym_note_on(channel - 1, note);
+			opn_note_on(channel - 1, note);
 		else
-			ym_note_off(channel - 1, note);
+			opn_note_off(channel - 1, note);
 	}
 }
 
 void handleNoteOff(byte channel, byte note, byte velocity)
 {
 	if (channel == 10) {
-		ym_drum_off(note);
+		//opn_drum_off(note);
 	}
 	else {
-		ym_note_off(channel - 1, note);
-	}
-}
-
-#define CN_COMPOSITE		10
-#define CN_AM_DEPTH		11
-#define CN_VIB_DEPTH		12
-#define CN_FEEDBACK		13
-#define CN_DECAY_ALG		14
-
-#define CN_OP1_AM		20
-#define CN_OP2_AM		21
-#define CN_OP1_VIB		22
-#define CN_OP2_VIB		23
-#define CN_OP1_MAINTAIN		24
-#define CN_OP2_MAINTAIN		25
-#define CN_OP1_MODFREQ		26
-#define CN_OP2_MODFREQ		27
-#define CN_OP1_LEVEL		28
-#define CN_OP2_LEVEL		29
-#define CN_OP1_ATTACK		30
-#define CN_OP2_ATTACK		31
-#define CN_OP1_DECAY		32
-#define CN_OP2_DECAY		33
-#define CN_OP1_SUSTAIN		34
-#define CN_OP2_SUSTAIN		35
-#define CN_OP1_RELEASE		36
-#define CN_OP2_RELEASE		37
-#define CN_OP1_WAVEFORM		38
-#define CN_OP2_WAVEFORM		39
-
-
-void handleControlChange(byte channel, byte number, byte value)
-{
-	byte addr;
-
-	switch (number) {
-	    case 1:
-		ym_write_data(0xA3, value);
-		ym_write_data(0xB3, 0x31);
-		break;
-
-	    case CN_COMPOSITE: 
-		addr = 0x08;
-		ym_write_data(addr, (ym_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
-		break;
-
-	    case CN_AM_DEPTH: 
-		addr = 0xBD;
-		ym_write_data(addr, (ym_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
-		break;
-
-	    case CN_VIB_DEPTH:
-		addr = 0xBD;
-		ym_write_data(addr, (ym_memmap[addr] & 0xBF) | (value ? 0x40 : 0x00));
-		break;
-
-	    case CN_FEEDBACK:
-		addr = 0xC0;
-		ym_write_data(addr, (ym_memmap[addr] & 0xF1) | ((value & 0x7) << 1));
-		break;
-
-	    case CN_DECAY_ALG:
-		addr = 0xC0;
-		ym_write_data(addr, (ym_memmap[addr] & 0xFE) | (value ? 0x01 : 0x00));
-		break;
-
-
-	    case CN_OP1_AM:
-	    case CN_OP2_AM:
-		addr = (number == CN_OP1_AM) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
-		break;
-
-	    case CN_OP1_VIB:
-	    case CN_OP2_VIB:
-		addr = (number == CN_OP1_VIB) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0xBF) | (value ? 0x40 : 0x00));
-		break;
-
-	    case CN_OP1_MAINTAIN:
-	    case CN_OP2_MAINTAIN:
-		addr = (number == CN_OP1_VIB) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0xDF) | (value ? 0x20 : 0x00));
-		break;
-
-	    case CN_OP1_MODFREQ:
-	    case CN_OP2_MODFREQ:
-		addr = (number == CN_OP1_MODFREQ) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0xF0) | (value & 0x0F));
-		break;
-
-	    case CN_OP1_LEVEL:
-	    case CN_OP2_LEVEL:
-		addr = (number == CN_OP1_LEVEL) ? 0x40 + channels[0].op1 : 0x40 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0xC0) | (value & 0x3F));
-		break;
-
-	    case CN_OP1_ATTACK:
-	    case CN_OP2_ATTACK:
-		addr = (number == CN_OP1_ATTACK) ? 0x60 + channels[0].op1 : 0x60 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0x0F) | ((value & 0x0F) << 4));
-		break;
-
-	    case CN_OP1_DECAY:
-	    case CN_OP2_DECAY:
-		addr = (number == CN_OP1_DECAY) ? 0x60 + channels[0].op1 : 0x60 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0xF0) | (value & 0x0F));
-		break;
-
-	    case CN_OP1_SUSTAIN:
-	    case CN_OP2_SUSTAIN:
-		addr = (number == CN_OP1_SUSTAIN) ? 0x80 + channels[0].op1 : 0x80 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0x0F) | ((value & 0x0F) << 4));
-		break;
-
-	    case CN_OP1_RELEASE:
-	    case CN_OP2_RELEASE:
-		addr = (number == CN_OP1_RELEASE) ? 0x80 + channels[0].op1 : 0x80 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0xF0) | (value & 0x0F));
-		break;
-
-	    case CN_OP1_WAVEFORM:
-	    case CN_OP2_WAVEFORM:
-		addr = (number == CN_OP1_WAVEFORM) ? 0xE0 + channels[0].op1 : 0xE0 + channels[0].op2;
-		ym_write_data(addr, (ym_memmap[addr] & 0xFC) | (value & 0x03));
-		break;
-
-	    default:
-		break;
+		opn_note_off(channel - 1, note);
 	}
 }
 
 void handleProgramChange(byte channel, byte number)
 {
-	ym_change_instrument(channel - 1, number);
+	opn_change_instrument(channel - 1, number);
+}
+
+void handleControlChange(byte channel, byte number, byte value)
+{
+	opn_change_parameter(channel - 1, number, value);
+}
+
+void debug_midi(byte channel, byte data)
+{
+	MIDI.sendProgramChange(data, channel + 1);
 }
 
 void midi_init()
@@ -211,8 +93,8 @@ void midi_init()
 	MIDI.begin(MIDI_CHANNEL_OMNI);
 	MIDI.setHandleNoteOn(handleNoteOn);
     	MIDI.setHandleNoteOff(handleNoteOff);
-    	MIDI.setHandleControlChange(handleControlChange);
     	MIDI.setHandleProgramChange(handleProgramChange);
+    	MIDI.setHandleControlChange(handleControlChange);
 	Serial.begin(SERIAL_SPEED);
 }
 
@@ -221,8 +103,14 @@ void setup()
 	pinMode(13, OUTPUT);
 	digitalWrite(13, 0);
 
-	setup_audio();
-	initialize_audio();
+	//opl_setup_audio();
+	//opl_init_audio();
+
+	opn_setup();
+	opn_init_audio();
+
+	//ay3_init_audio();
+	//ay3_run_test();
 
 	//nerve_init();
 	midi_init();
@@ -234,61 +122,6 @@ void loop()
 
 	MIDI.read();
 }
-
-
-/*
-void run_test()
-{
-	ym_write_data(13, 0xFF);
-	ym_write_data(14, 0xFF);
-	ym_write_data(15, 0x00);
-
-	set_tone(0, NOTE_E4);
-	delay(200);
-	set_tone(0, 0);
-	delay(20);
-
-	set_tone(0, NOTE_E4);
-	delay(150);
-	set_tone(0, 0);
-	delay(20);
-
-	set_tone(0, NOTE_E4);
-	delay(150);
-	set_tone(0, 0);
-	delay(20);
-
-	delay(100);
-
-	set_tone(0, NOTE_C4);
-	delay(100);
-	set_tone(0, 0);
-	delay(20);
-
-	set_tone(0, NOTE_E4);
-	delay(100);
-	set_tone(0, 0);
-	delay(20);
-
-	delay(200);
-
-	set_tone(0, NOTE_G4);
-	delay(200);
-	set_tone(0, 0);
-	delay(20);
-
-	delay(200);
-
-	set_tone(0, NOTE_G3);
-	delay(200);
-	set_tone(0, 0);
-	delay(20);
-}
-*/
-
-
-
-
 
 
 /*

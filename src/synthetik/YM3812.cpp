@@ -3,16 +3,31 @@
 #include "YM3812.h"
 #include "YM3812_instruments.h"
 
+
+/*
 #define YM_LDATA_PORT	PORTA
 #define YM_LDATA_PIN	PINA
 #define YM_LDATA_DDR	DDRA
 
-#define YM_CS		38
-#define YM_RD		39
-#define YM_WR		40
+#define YM_CS_OPL	38
+#define YM_RDWR		40
 #define YM_A0		41
 #define YM_RESET	50
 #define YM_A1		51
+*/
+
+#define YM_LDATA_PORT	PORTF
+#define YM_LDATA_PIN	PINF
+#define YM_LDATA_DDR	DDRF
+
+#define YM_RESET	5
+#define YM_CS_OPL	8
+#define YM_RDWR		12
+#define YM_A0		10
+#define YM_A1		11
+
+
+
 
 #define YM_HIHAT	0
 #define YM_CYMBAL	1
@@ -21,7 +36,7 @@
 #define YM_BASSDRUM	4
 
 
-byte ym_memmap[256];
+byte opl_memmap[256];
 
 // Based on a 3.57954 MHz crystal
 word note_fnums[] = {
@@ -33,7 +48,7 @@ word note_fnums[] = {
 	345, 365, 387, 410, 435, 460, 488, 517, 547, 580, 614, 651,
 };
 
-struct ym_channel channels[9] = {
+struct opl_channel channels[9] = {
 	{ 0x00, 0x03 },
 	{ 0x01, 0x04 },
 	{ 0x02, 0x05 },
@@ -69,17 +84,15 @@ struct instrument presets[] = {
 	//{ 0x01, 0x0b, 0xc9, 0x4f, 0x00, 0x00,   0x00, 0x00, 0xa4, 0x4f, 0x00 },
 };
 
-void setup_audio()
+void opl_setup_audio()
 {
-	pinMode(YM_CS, OUTPUT);
-	pinMode(YM_RD, OUTPUT);
-	pinMode(YM_WR, OUTPUT);
+	pinMode(YM_CS_OPL, OUTPUT);
+	pinMode(YM_RDWR, OUTPUT);
 	pinMode(YM_A0, OUTPUT);
 	pinMode(YM_A1, OUTPUT);
 	pinMode(YM_RESET, OUTPUT);
-	digitalWrite(YM_CS, 1);
-	digitalWrite(YM_RD, 1);
-	digitalWrite(YM_WR, 1);
+	digitalWrite(YM_CS_OPL, 1);
+	digitalWrite(YM_RDWR, 1);
 	digitalWrite(YM_A0, 0);
 	digitalWrite(YM_A1, 0);
 	digitalWrite(YM_RESET, 1);
@@ -89,52 +102,52 @@ void setup_audio()
 	YM_LDATA_DDR = 0x00;
 }
 
-void ym_set_instrument(byte channel, struct instrument *config)
+void opl_set_instrument(byte channel, struct instrument *config)
 {
-	struct ym_channel ch = channels[channel];
+	struct opl_channel ch = channels[channel];
 
-	ym_write_data(0x20 + ch.op1, config->a20);
-	ym_write_data(0x40 + ch.op1, config->a40);
-	ym_write_data(0x60 + ch.op1, config->a60);
-	ym_write_data(0x80 + ch.op1, config->a80);
-	ym_write_data(0xC0 + ch.op1, config->aC0);
-	ym_write_data(0xE0 + ch.op1, config->aE0);
-	ym_write_data(0x20 + ch.op2, config->b20);
-	ym_write_data(0x40 + ch.op2, config->b40);
-	ym_write_data(0x60 + ch.op2, config->b60);
-	ym_write_data(0x80 + ch.op2, config->b80);
-	ym_write_data(0xE0 + ch.op2, config->bE0);
+	opl_write_data(0x20 + ch.op1, config->a20);
+	opl_write_data(0x40 + ch.op1, config->a40);
+	opl_write_data(0x60 + ch.op1, config->a60);
+	opl_write_data(0x80 + ch.op1, config->a80);
+	opl_write_data(0xC0 + ch.op1, config->aC0);
+	opl_write_data(0xE0 + ch.op1, config->aE0);
+	opl_write_data(0x20 + ch.op2, config->b20);
+	opl_write_data(0x40 + ch.op2, config->b40);
+	opl_write_data(0x60 + ch.op2, config->b60);
+	opl_write_data(0x80 + ch.op2, config->b80);
+	opl_write_data(0xE0 + ch.op2, config->bE0);
 
-	ym_write_data(0xA0 + channel, config->gA0);
-	ym_write_data(0xB0 + channel, config->gB0);
+	opl_write_data(0xA0 + channel, config->gA0);
+	opl_write_data(0xB0 + channel, config->gB0);
 
 }
 
-void initialize_audio()
+void opl_init_audio()
 {
-	ym_reset();
+	opl_reset();
 
-	ym_write_data(0x01, 0x10);
+	opl_write_data(0x01, 0x10);
 
-	ym_write_data(0xBD, 0x20);
+	opl_write_data(0xBD, 0x20);
 
-	ym_set_instrument(0, &presets[0]);
-	ym_set_instrument(1, &presets[0]);
-	ym_set_instrument(2, &presets[0]);
-	ym_set_instrument(3, &presets[0]);
-	ym_set_instrument(4, &presets[0]);
-	ym_set_instrument(5, &presets[0]);
-	ym_set_instrument(6, &presets[5]);	// Bass Drum
-	ym_set_instrument(7, &presets[6]);	// HiHat and Snare Drum
-	ym_set_instrument(8, &presets[7]);	// Cymbal?
+	opl_set_instrument(0, &presets[0]);
+	opl_set_instrument(1, &presets[0]);
+	opl_set_instrument(2, &presets[0]);
+	opl_set_instrument(3, &presets[0]);
+	opl_set_instrument(4, &presets[0]);
+	opl_set_instrument(5, &presets[0]);
+	opl_set_instrument(6, &presets[5]);	// Bass Drum
+	opl_set_instrument(7, &presets[6]);	// HiHat and Snare Drum
+	opl_set_instrument(8, &presets[7]);	// Cymbal?
 
 
-	ym_write_data(0xB0, 0x31);		// Turn the voice on; set the octave and freq MSB
+	opl_write_data(0xB0, 0x31);		// Turn the voice on; set the octave and freq MSB
 	delay(2000);
-	ym_write_data(0xB0, 0x11);		// Turn the voice off; set the octave and freq MSB
+	opl_write_data(0xB0, 0x11);		// Turn the voice off; set the octave and freq MSB
 }
 
-void ym_reset()
+void opl_reset()
 {
 	digitalWrite(YM_RESET, 0);
 	delay(10);
@@ -159,7 +172,7 @@ struct instrument *instrument_select(byte number)
 	return NULL;
 }
 
-void ym_change_instrument(byte channel, byte number)
+void opl_change_instrument(byte channel, byte number)
 {
 	if (number > 120)
 		return;
@@ -168,24 +181,24 @@ void ym_change_instrument(byte channel, byte number)
 	//struct instrument *config = instrument_select(number);
 	struct instrument *config = &list[number];
 	if (config)
-		ym_set_instrument(channel, config);
+		opl_set_instrument(channel, config);
 }
 
 
-void ym_note_on(byte channel, byte note)
+void opl_note_on(byte channel, byte note)
 {
 	channel = channel % 6;
 	byte block = (note / 12);
 	byte offset = note % 12;
 
-	ym_write_data(0xA0 + channel, note_fnums[offset + 12]);
-	ym_write_data(0xB0 + channel, 0x20 | (block << 2) | (note_fnums[offset + 12] >> 8));
+	opl_write_data(0xA0 + channel, note_fnums[offset + 12]);
+	opl_write_data(0xB0 + channel, 0x20 | (block << 2) | (note_fnums[offset + 12] >> 8));
 }
 
-void ym_note_off(byte channel, byte note)
+void opl_note_off(byte channel, byte note)
 {
 	channel = channel % 6;
-	ym_write_data(0xB0 + channel, 0x00);
+	opl_write_data(0xB0 + channel, 0x00);
 }
 
 
@@ -230,36 +243,36 @@ byte percussion_select(byte note)
 
 
 
-void ym_drum_on(byte drum)
+void opl_drum_on(byte drum)
 {
 	drum = percussion_select(drum);
-	ym_write_data(0xBD, (ym_memmap[0xBD] & 0xE0) | (0x01 << drum));
+	opl_write_data(0xBD, (opl_memmap[0xBD] & 0xE0) | (0x01 << drum));
 }
 
-void ym_drum_off(byte drum)
+void opl_drum_off(byte drum)
 {
 	drum = percussion_select(drum);
-	ym_write_data(0xBD, ym_memmap[0xBD] & (0xE0 | ~(0x01 << drum)));
+	opl_write_data(0xBD, opl_memmap[0xBD] & (0xE0 | ~(0x01 << drum)));
 }
 
 
-void ym_write_data(byte addr, byte data)
+void opl_write_data(byte addr, byte data)
 {
 	// Record the data for future writes
-	ym_memmap[addr] = data;
+	opl_memmap[addr] = data;
 
 	// Output to data bus
 	YM_LDATA_DDR = 0xFF;
-	digitalWrite(YM_CS, 0);
+	digitalWrite(YM_CS_OPL, 0);
 
 	// A0=0 to select register
 	digitalWrite(YM_A0, 0);
 	YM_LDATA_PORT = addr;
 
 	// Write register value
-	digitalWrite(YM_WR, 0);
+	digitalWrite(YM_RDWR, 0);
 	delayMicroseconds(1);
-	digitalWrite(YM_WR, 1);
+	digitalWrite(YM_RDWR, 1);
 	delayMicroseconds(5);
 
 	// A0=1 to write data
@@ -267,13 +280,141 @@ void ym_write_data(byte addr, byte data)
 	YM_LDATA_PORT = data;
 
 	// Write data value
-	digitalWrite(YM_WR, 0);
+	digitalWrite(YM_RDWR, 0);
 	delayMicroseconds(1);
-	digitalWrite(YM_WR, 1);
+	digitalWrite(YM_RDWR, 1);
 	delayMicroseconds(23);
 
-	digitalWrite(YM_CS, 1);
+	digitalWrite(YM_CS_OPL, 1);
 	digitalWrite(YM_A0, 0);
 }
 
+#define CN_COMPOSITE		10
+#define CN_AM_DEPTH		11
+#define CN_VIB_DEPTH		12
+#define CN_FEEDBACK		13
+#define CN_DECAY_ALG		14
+
+#define CN_OP1_AM		20
+#define CN_OP2_AM		21
+#define CN_OP1_VIB		22
+#define CN_OP2_VIB		23
+#define CN_OP1_MAINTAIN		24
+#define CN_OP2_MAINTAIN		25
+#define CN_OP1_MODFREQ		26
+#define CN_OP2_MODFREQ		27
+#define CN_OP1_LEVEL		28
+#define CN_OP2_LEVEL		29
+#define CN_OP1_ATTACK		30
+#define CN_OP2_ATTACK		31
+#define CN_OP1_DECAY		32
+#define CN_OP2_DECAY		33
+#define CN_OP1_SUSTAIN		34
+#define CN_OP2_SUSTAIN		35
+#define CN_OP1_RELEASE		36
+#define CN_OP2_RELEASE		37
+#define CN_OP1_WAVEFORM		38
+#define CN_OP2_WAVEFORM		39
+
+
+void opl_change_parameter(byte channel, byte number, byte value)
+{
+	byte addr;
+
+	switch (number) {
+	    case 1:
+		opl_write_data(0xA3, value);
+		opl_write_data(0xB3, 0x31);
+		break;
+
+	    case CN_COMPOSITE: 
+		addr = 0x08;
+		opl_write_data(addr, (opl_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
+		break;
+
+	    case CN_AM_DEPTH: 
+		addr = 0xBD;
+		opl_write_data(addr, (opl_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
+		break;
+
+	    case CN_VIB_DEPTH:
+		addr = 0xBD;
+		opl_write_data(addr, (opl_memmap[addr] & 0xBF) | (value ? 0x40 : 0x00));
+		break;
+
+	    case CN_FEEDBACK:
+		addr = 0xC0;
+		opl_write_data(addr, (opl_memmap[addr] & 0xF1) | ((value & 0x7) << 1));
+		break;
+
+	    case CN_DECAY_ALG:
+		addr = 0xC0;
+		opl_write_data(addr, (opl_memmap[addr] & 0xFE) | (value ? 0x01 : 0x00));
+		break;
+
+
+	    case CN_OP1_AM:
+	    case CN_OP2_AM:
+		addr = (number == CN_OP1_AM) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0x7F) | (value ? 0x80 : 0x00));
+		break;
+
+	    case CN_OP1_VIB:
+	    case CN_OP2_VIB:
+		addr = (number == CN_OP1_VIB) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0xBF) | (value ? 0x40 : 0x00));
+		break;
+
+	    case CN_OP1_MAINTAIN:
+	    case CN_OP2_MAINTAIN:
+		addr = (number == CN_OP1_VIB) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0xDF) | (value ? 0x20 : 0x00));
+		break;
+
+	    case CN_OP1_MODFREQ:
+	    case CN_OP2_MODFREQ:
+		addr = (number == CN_OP1_MODFREQ) ? 0x20 + channels[0].op1 : 0x20 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0xF0) | (value & 0x0F));
+		break;
+
+	    case CN_OP1_LEVEL:
+	    case CN_OP2_LEVEL:
+		addr = (number == CN_OP1_LEVEL) ? 0x40 + channels[0].op1 : 0x40 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0xC0) | (value & 0x3F));
+		break;
+
+	    case CN_OP1_ATTACK:
+	    case CN_OP2_ATTACK:
+		addr = (number == CN_OP1_ATTACK) ? 0x60 + channels[0].op1 : 0x60 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0x0F) | ((value & 0x0F) << 4));
+		break;
+
+	    case CN_OP1_DECAY:
+	    case CN_OP2_DECAY:
+		addr = (number == CN_OP1_DECAY) ? 0x60 + channels[0].op1 : 0x60 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0xF0) | (value & 0x0F));
+		break;
+
+	    case CN_OP1_SUSTAIN:
+	    case CN_OP2_SUSTAIN:
+		addr = (number == CN_OP1_SUSTAIN) ? 0x80 + channels[0].op1 : 0x80 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0x0F) | ((value & 0x0F) << 4));
+		break;
+
+	    case CN_OP1_RELEASE:
+	    case CN_OP2_RELEASE:
+		addr = (number == CN_OP1_RELEASE) ? 0x80 + channels[0].op1 : 0x80 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0xF0) | (value & 0x0F));
+		break;
+
+	    case CN_OP1_WAVEFORM:
+	    case CN_OP2_WAVEFORM:
+		addr = (number == CN_OP1_WAVEFORM) ? 0xE0 + channels[0].op1 : 0xE0 + channels[0].op2;
+		opl_write_data(addr, (opl_memmap[addr] & 0xFC) | (value & 0x03));
+		break;
+
+	    default:
+		break;
+	}
+}
 

@@ -2,7 +2,7 @@
 #ifndef YM3812_H
 #define YM3812_H
 
-struct ym_channel {
+struct opl_channel {
 	byte op1;
 	byte op2;
 };
@@ -24,18 +24,19 @@ struct instrument {
 };
 
 
-void setup_audio();
-void initialize_audio();
-void ym_reset();
-void ym_change_instrument(byte channel, byte number);
-void ym_note_on(byte channel, byte note);
-void ym_note_off(byte channel, byte note);
-void ym_drum_on(byte drum);
-void ym_drum_off(byte drum);
-void ym_write_data(byte addr, byte data);
+void opl_setup_audio();
+void opl_init_audio();
+void opl_reset();
+void opl_change_instrument(byte channel, byte number);
+void opl_note_on(byte channel, byte note);
+void opl_note_off(byte channel, byte note);
+void opl_drum_on(byte drum);
+void opl_drum_off(byte drum);
+void opl_write_data(byte addr, byte data);
+void opl_change_parameter(byte channel, byte number, byte value);
 
-extern byte ym_memmap[256];
-extern struct ym_channel channels[9];
+extern byte opl_memmap[256];
+extern struct opl_channel channels[9];
 
 #endif
 

@@ -1,19 +1,14 @@
 
-* add a reset button on top
+* replace YM3438 resistors with 1k or 2.2k, and the Rf resistors of the op amp with 5.1k.  The amplification should be 5.1k/1k at the high end and 5.1k/11k at the low end of the trim pot
+* maybe remove the YM3812 trim pot so we can rewire it with a fixed volume at a later date.  Should I maybe put in 1k/2.2k resistors for that chip as well???
+
+
 
 * should you move the audio pot to only control the power amp volume and not the line in volume?
-
-* verify resistor sizing for the mixer section
-
-* make sure the drill files show holes for the mounting pins of the midi jack
-
 
 * can I add some helpful things to avoid desoldering?
 	* ability to bypass the onboard amps?
 	* ability to easily swap out resistor values for amp gain
-
-* check out the output of various line out devices on the scope to see if their output is centered around 0 with + and - voltage, or if it's all positive...
-
 
 
 PLANNING:
