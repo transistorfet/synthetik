@@ -271,21 +271,23 @@ void opn_set_instrument(byte channel, opn_instrument_t *instr)
 }
 
 
-#define OPN_CN_DETUNE		0x10
-#define OPN_CN_MULTIPLE		0x14
-#define OPN_CN_TOTAL_LEVEL	0x18
-#define OPN_CN_RATE_SCALE	0x1B
-#define OPN_CN_ATTACK_RATE	0x20
-#define OPN_CN_MODULATION	0x24
-#define OPN_CN_FIRST_DECAY	0x28
-#define OPN_CN_SECOND_DECAY	0x2B
-#define OPN_CN_SECOND_LEVEL	0x30
-#define OPN_CN_RELEASE		0x34
+#define OPN_CN_DETUNE		0x10	// 16
+#define OPN_CN_MULTIPLE		0x14	// 20
+#define OPN_CN_TOTAL_LEVEL	0x18	// 24
+#define OPN_CN_RATE_SCALE	0x1C	// 28
+#define OPN_CN_ATTACK_RATE	0x20	// 32
+#define OPN_CN_MODULATION	0x24	// 36
+#define OPN_CN_FIRST_DECAY	0x28	// 40
+#define OPN_CN_SECOND_DECAY	0x2C	// 44
+#define OPN_CN_SECOND_LEVEL	0x30	// 48
+#define OPN_CN_RELEASE		0x34	// 52
 
-#define OPN_CN_FEEDBACK		0x60
-#define OPN_CN_ALGORITHM	0x61
-#define OPN_CN_AMP_MOD		0x62
-#define OPN_CN_FREQ_MOD		0x63
+#define OPN_CN_FEEDBACK		0x60	// 96
+#define OPN_CN_ALGORITHM	0x61	// 97
+#define OPN_CN_AMP_MOD		0x62	// 98
+#define OPN_CN_FREQ_MOD		0x63	// 99
+#define OPN_CN_LFO_ENABLE	0x64	// 100
+#define OPN_CN_LFO_FREQ		0x65	// 101
 
 
 void opn_change_parameter(byte channel, byte number, byte value)
@@ -346,6 +348,12 @@ void opn_change_parameter(byte channel, byte number, byte value)
 		return;
 	    case OPN_CN_FREQ_MOD:
 		opn_modify_data(bank, 0xB4 + reg, 0x03, value);
+		return;
+	    case OPN_CN_LFO_ENABLE:
+		opn_modify_data(bank, 0x22, 0x08, value << 4);
+		return;
+	    case OPN_CN_LFO_FREQ:
+		opn_modify_data(bank, 0x22, 0x07, value);
 		return;
 	    default:
 		break;

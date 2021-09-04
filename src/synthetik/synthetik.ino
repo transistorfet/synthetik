@@ -53,34 +53,34 @@ MIDI_CREATE_DEFAULT_INSTANCE();
 void handleNoteOn(byte channel, byte note, byte velocity)
 {
 	if (channel == 10) {
-		//opn_drum_on(note);
+		opl_drum_on(note);
 	}
 	else {
 		if (velocity)
-			opn_note_on(channel - 1, note);
+			opl_note_on(channel - 1, note);
 		else
-			opn_note_off(channel - 1, note);
+			opl_note_off(channel - 1, note);
 	}
 }
 
 void handleNoteOff(byte channel, byte note, byte velocity)
 {
 	if (channel == 10) {
-		//opn_drum_off(note);
+		opl_drum_off(note);
 	}
 	else {
-		opn_note_off(channel - 1, note);
+		opl_note_off(channel - 1, note);
 	}
 }
 
 void handleProgramChange(byte channel, byte number)
 {
-	opn_change_instrument(channel - 1, number);
+	opl_change_instrument(channel - 1, number);
 }
 
 void handleControlChange(byte channel, byte number, byte value)
 {
-	opn_change_parameter(channel - 1, number, value);
+	opl_change_parameter(channel - 1, number, value);
 }
 
 void debug_midi(byte channel, byte data)
@@ -103,11 +103,11 @@ void setup()
 	pinMode(13, OUTPUT);
 	digitalWrite(13, 0);
 
-	//opl_setup_audio();
-	//opl_init_audio();
+	opl_setup_audio();
+	opl_init_audio();
 
-	opn_setup();
-	opn_init_audio();
+	//opn_setup();
+	//opn_init_audio();
 
 	//ay3_init_audio();
 	//ay3_run_test();

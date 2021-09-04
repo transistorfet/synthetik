@@ -1,4 +1,8 @@
- 
+#!/usr/bin/python3
+#
+# Reads in a preset *.bnk file containing a bank of instrument settings for the YM3812 (OPL2)
+# and outputs it as a set of register values which can be used in the Arduino program
+#
 
 import struct
 

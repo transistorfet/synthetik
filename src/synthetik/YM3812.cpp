@@ -129,7 +129,8 @@ void opl_init_audio()
 
 	opl_write_data(0x01, 0x10);
 
-	opl_write_data(0xBD, 0x20);
+	// Enable rhythm section
+	//opl_write_data(0xBD, 0x20);
 
 	opl_set_instrument(0, &presets[0]);
 	opl_set_instrument(1, &presets[0]);
@@ -155,6 +156,7 @@ void opl_reset()
 	delay(10);
 }
 
+/*
 struct instrument *instrument_select(byte number)
 {
 	if (number == 18)
@@ -171,6 +173,7 @@ struct instrument *instrument_select(byte number)
 		return &presets[1];
 	return NULL;
 }
+*/
 
 void opl_change_instrument(byte channel, byte number)
 {
@@ -245,14 +248,25 @@ byte percussion_select(byte note)
 
 void opl_drum_on(byte drum)
 {
-	drum = percussion_select(drum);
-	opl_write_data(0xBD, (opl_memmap[0xBD] & 0xE0) | (0x01 << drum));
+	//drum = percussion_select(drum);
+	//opl_write_data(0xBD, (opl_memmap[0xBD] & 0xE0) | (0x01 << drum));
+
+
+	byte note = 32;
+	byte block = (note / 12);
+	byte offset = note % 12;
+
+	opl_set_instrument(8, &list[drum - 35 + 128]);
+	opl_write_data(0xA0 + 8, note_fnums[offset + 12]);
+	opl_write_data(0xB0 + 8, 0x20 | (block << 2) | (note_fnums[offset + 12] >> 8));
 }
 
 void opl_drum_off(byte drum)
 {
-	drum = percussion_select(drum);
-	opl_write_data(0xBD, opl_memmap[0xBD] & (0xE0 | ~(0x01 << drum)));
+	//drum = percussion_select(drum);
+	//opl_write_data(0xBD, opl_memmap[0xBD] & (0xE0 | ~(0x01 << drum)));
+
+	opl_write_data(0xB0 + 8, 0x00);
 }
 
 

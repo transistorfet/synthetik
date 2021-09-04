@@ -1,0 +1,19 @@
+ 
+Revision 1 Errata and Notes
+===========================
+
+- the mixer is wired quite incorrectly.  The non-inverting inputs are tied to ground when they should be tied to a 2.5V reference.
+  As a result, there is no sound.  Added two 10k resistors and a 10uF capacitor with a jumper wire to the exposed pins to fix it
+
+- the trim potentiometers are mounted upside down for what they should be
+
+- the volume potentiometer is too far back on the board.  The actual part number I ordered doesn't have the anchor pins
+
+- the mixer doesn't work properly.  With only the YM3438 connected, and the mixer resistors replaced with 2.2k, and the op amp
+  feedback resistors changed to 4.7k, that one chip is producing sound.  I also removed the YM3812 trim pot and cut the trace
+  between the mixer inputs to isolate it so it didn't interfere
+
+
+
+- there is a humming and I haven't figured out what's causing it yet
+

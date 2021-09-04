@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+#
+# Given the octave settings, which are the exact frequencies in Hz for each note in the octave
+# calculate the F number for the corresponding note in the YM3812 (OPL2)
 
 crystal = 3.57954 * 1000000
 block = 4
